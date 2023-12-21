@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorpresa!</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black; /* Fondo negro detrás del video */
+    }
+    #curtain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: red;
+      z-index: 2;
+      transition: opacity 1s ease;
+    }
+    #revealVideo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 1s ease;
+      width: 100%;
+      height: 100%;
+    }
+    #revealButtonContainer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+    #revealButton {
+      padding: 10px 15px;
+      background-color: #800000; /* Color rojo oscuro */
+      color: #fff; /* Texto blanco */
+      border: 2px solid #fff; /* Bordes blancos */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #shareButtonContainer {
+      display: none; /* Inicialmente oculto */
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 3;
+    }
+    #shareButton {
+      padding: 10px 15px;
+      background-color: #3366cc; /* Color azul para el botón de compartir */
+      color: #fff; /* Texto blanco */
+      border: 2px solid #fff; /* Bordes blancos */
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="curtain"></div>
+
+<video id="revealVideo" controls autoplay>
+  <source src="feliznavidad.mp4" type="video/mp4">
+  Tu navegador no soporta el tag de video.
+</video>
+
+<div id="revealButtonContainer">
+  <button id="revealButton" onclick="revealVideo()">Revelar Video</button>
+</div>
+
+<div id="shareButtonContainer">
+  <button id="shareButton" onclick="shareLink()">Compartir</button>
+</div>
+
+<script>
+  function revealVideo() {
+    var curtain = document.getElementById("curtain");
+    var revealVideo = document.getElementById("revealVideo");
+    var revealButtonContainer = document.getElementById("revealButtonContainer");
+    var shareButtonContainer = document.getElementById("shareButtonContainer");
+
+    curtain.style.opacity = 0;
+    revealVideo.style.opacity = 1;
+    revealButtonContainer.style.display = "none"; // Oculta el contenedor del botón
+
+    // Reproduce el video automáticamente al revelar
+    revealVideo.play();
+
+    // Muestra el botón de compartir después de revelar el video
+    shareButtonContainer.style.display = "block";
+  }
+
+  function shareLink() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Sorpresa!',
+        text: '¡Mira este video!',
+        url: window.location.href
+      })
+      .then(() => console.log('Contenido compartido con éxito'))
+      .catch((error) => console.error('Error al compartir:', error));
+    } else {
+      alert('La función de compartir no es compatible en este navegador.');
+    }
+  }
+</script>
+
+</body>
+</html>
